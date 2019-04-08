@@ -3,7 +3,8 @@ package com.company.library
 import scala.collection.mutable.ListBuffer
 
 class Library (
-  var allBooks: ListBuffer[Book] = Books.all.to[ListBuffer]
+  var allBooks: ListBuffer[Book] = Books.all.to[ListBuffer],
+  var loanedBooks: ListBuffer[Book] = ListBuffer[Book]()
 ) {
   def searchIsbn(isbn: String): Set[Book] = {
     var result = Set[Book]()
@@ -28,5 +29,10 @@ class Library (
 
   def lend(book: Book) {
     allBooks -= book
+    loanedBooks += book
+  }
+
+  def isOnLoan(book: Book): Boolean = {
+    loanedBooks.contains(book)
   }
 }

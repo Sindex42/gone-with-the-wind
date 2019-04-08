@@ -44,9 +44,19 @@ class LibrarySpec extends FunSuite {
   }
 
   test("Lending books") {
-    val shadow = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+    val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+    library.lend(shadowBook)
 
-    library.lend(shadow)
-    library.allBooks should not contain shadow
+    library.allBooks should not contain shadowBook
+  }
+
+  test("Checking loaned status of a book (true)") {
+    val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+    library.isOnLoan(shadowBook) shouldBe true
+  }
+
+  test("Checking loaned status of a book (false)") {
+    val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+    library.isOnLoan(timeBook) shouldBe false
   }
 }
