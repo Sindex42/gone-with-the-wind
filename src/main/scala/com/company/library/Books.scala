@@ -101,7 +101,12 @@ object Books {
     Book("Happy Days with the Naked Chef", "Oliver, Jamie", "dyoqtx"),
     Book("Hunger Games,The:Hunger Games Trilogy", "Collins, Suzanne", "dbfflaxab"),
     Book("Lost Boy,The:A Foster Child's Search for the Love of a Family", "Pelzer, Dave", "dsrzkqjsp"),
-    Book("Jamie's Ministry of Food:Anyone Can Learn to Cook in 24 Hours", "Oliver, Jamie", "foacwdyi")
+    Book("Jamie's Ministry of Food:Anyone Can Learn to Cook in 24 Hours", "Oliver, Jamie", "foacwdyi"),
+    Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
+  )
+
+  val reference: List[Book] = List(
+    Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
   )
 }
 
