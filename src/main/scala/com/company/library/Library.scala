@@ -15,4 +15,11 @@ class Library (val books: List[Book] = Books.all) {
 
     result
   }
+
+  def searchTitle(search: String): Set[Book] = {
+    var result = Set[Book]()
+    for (book <- books if book.title.contains(search)) { result += book }
+
+    result
+  }
 }
