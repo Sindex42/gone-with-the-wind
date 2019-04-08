@@ -12,4 +12,8 @@ class LibrarySpec extends FunSuite {
     library.searchIsbn("pidtkl") shouldBe Book("Da Vinci Code,The", "Brown, Dan", "pidtkl")
   }
 
+  test("Search by partial Author (one book)") {
+    val library = new Library
+    library.searchAuthor("Sebold") shouldBe Set(Book("Lovely Bones,The", "Sebold, Alice", "stniskzb"))
+  }
 }
