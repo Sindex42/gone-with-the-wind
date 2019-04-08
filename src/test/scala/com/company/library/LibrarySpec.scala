@@ -9,7 +9,7 @@ class LibrarySpec extends FunSuite {
   val library = new Library
 
   test("Search by ISBN match") {
-    library.searchIsbn("pidtkl") shouldBe Book("Da Vinci Code,The", "Brown, Dan", "pidtkl")
+    library.searchIsbn("pidtkl") shouldBe Set(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
   }
 
   test("Search by partial author (one book)") {
@@ -41,5 +41,12 @@ class LibrarySpec extends FunSuite {
     )
 
     library.searchTitle("Potter") shouldBe result
+  }
+
+  test("Lending books") {
+    val shadow = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+
+    library.lend(shadow)
+    library.allBooks should not contain shadow
   }
 }
