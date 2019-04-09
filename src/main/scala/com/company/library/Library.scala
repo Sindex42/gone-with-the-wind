@@ -18,7 +18,9 @@ class Library(val books: List[Book] = Books.all) {
   }
 
   def lend(book: Book) {
-    if (book.reference == true)
+    if (!books.contains(book))
+      throw new Exception("Book does not exist")
+    else if (book.reference)
       throw new Exception("Cannot lend reference books")
     else
       loanedBooks += book

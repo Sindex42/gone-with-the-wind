@@ -61,6 +61,15 @@ class LibrarySpec extends FunSuite {
     } should have message "Cannot lend reference books"
   }
 
+  test("Cannot lend a book that does not exist") {
+    val rubyBook = Book("Fake Book", "No Author", "xxxxxxxx")
+    val library = new Library()
+
+    the [Exception] thrownBy {
+      library.lend(rubyBook)
+    } should have message "Book does not exist"
+  }
+
   test("Checking loaned status of a book") {
     val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
