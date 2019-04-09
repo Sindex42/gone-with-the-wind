@@ -2,28 +2,29 @@ package com.company.library
 
 import scala.collection.mutable.ListBuffer
 
-class Library(val books: Books.type = Books) {
+class Library(
+  val allBooks: List[Book] = Books.all,
+  val referenceBooks: List[Book] = Books.reference
+) {
   var loanedBooks = ListBuffer[Book]()
 
   def searchIsbn(search: String): List[Book] = {
-    books.all.filter(book => book.ISBN == search)
+    allBooks.filter(book => book.ISBN == search)
   }
 
   def searchAuthor(search: String): List[Book] = {
-    books.all.filter(book => book.author.contains(search))
+    allBooks.filter(book => book.author.contains(search))
   }
 
   def searchTitle(search: String): List[Book] = {
-    books.all.filter(book => book.title.contains(search))
+    allBooks.filter(book => book.title.contains(search))
   }
 
   def lend(book: Book) {
-    if (books.reference.contains(book)) {
+    if (referenceBooks.contains(book))
       throw new Exception("Cannot lend reference books")
-    }
-    else {
+    else
       loanedBooks += book
-    }
   }
 
   def isOnLoan(book: Book): Boolean = {

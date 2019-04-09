@@ -6,62 +6,77 @@ import org.scalatest.Matchers._
 import com.company.library
 
 class LibrarySpec extends FunSuite {
-  val library = new Library
-
   test("Search by ISBN match") {
+    val testBooks = List[Book](
+      Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"),
+      Book("Angels and Demons", "Brown, Dan", "mayiwrko")
+    )
+
+    val library = new Library(testBooks)
     library.searchIsbn("pidtkl") shouldBe List(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
   }
 
-  test("Search by partial author (one book)") {
-    library.searchAuthor("Sebold") shouldBe List(Book("Lovely Bones,The", "Sebold, Alice", "stniskzb"))
-  }
-
-  test("Search by partial author (multiple books)") {
-    val result = List(
-      Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"),
-      Book("Angels and Demons", "Brown, Dan", "mayiwrko"),
-      Book("Lost Symbol,The", "Brown, Dan", "ewvxsoql"),
-      Book("Deception Point", "Brown, Dan", "wixnjrdb"),
-      Book("Digital Fortress", "Brown, Dan", "vwgikppxt")
+  test("Search by partial author") {
+    val testBooks = List[Book](
+      Book("Girl with the Dragon Tattoo,The:Millennium Trilogy", "Larsson, Stieg", "hlgbmw"),
+      Book("Girl Who Kicked the Hornets' Nest,The:Millennium Trilogy", "Larsson, Stieg", "dtlggzujc"),
+      Book("Atonement", "McEwan, Ian", "tfhmtlx")
+    )
+    val result = List[Book](
+      Book("Girl with the Dragon Tattoo,The:Millennium Trilogy", "Larsson, Stieg", "hlgbmw"),
+      Book("Girl Who Kicked the Hornets' Nest,The:Millennium Trilogy", "Larsson, Stieg", "dtlggzujc")
     )
 
-    library.searchAuthor("Dan") shouldBe result
+    val library = new Library(testBooks)
+    library.searchAuthor("Stieg") shouldBe result
   }
 
   test("Search by partial title") {
+    val testBooks = List[Book](
+      Book("Life of Pi", "Martel, Yann", "nggzbsum"),
+      Book("You are What You Eat:The Plan That Will Change Your Life", "McKeith, Gillian", "xskevg"),
+      Book("Harry Potter and the Deathly Hallows", "Rowling, J.K.", "ipszbehyh")
+    )
     val result = List(
-      Book("Harry Potter and the Deathly Hallows", "Rowling, J.K.", "ipszbehyh"),
-      Book("Harry Potter and the Philosopher's Stone", "Rowling, J.K.", "lfzowqpsj"),
-      Book("Harry Potter and the Order of the Phoenix", "Rowling, J.K.", "ymjklwq"),
-      Book("Harry Potter and the Goblet of Fire", "Rowling, J.K.", "krsmrccb"),
-      Book("Harry Potter and the Chamber of Secrets", "Rowling, J.K.", "dvceqblua"),
-      Book("Harry Potter and the Prisoner of Azkaban", "Rowling, J.K.", "iamvmb"),
-      Book("Harry Potter and the Half-blood Prince:Children's Edition", "Rowling, J.K.", "gdjvia"),
-      Book("Harry Potter and the Half-blood Prince", "Rowling, J.K.", "ajaoshq")
+      Book("Life of Pi", "Martel, Yann", "nggzbsum"),
+      Book("You are What You Eat:The Plan That Will Change Your Life", "McKeith, Gillian", "xskevg")
     )
 
-    library.searchTitle("Potter") shouldBe result
+    val library = new Library(testBooks)
+    library.searchTitle("Life") shouldBe result
   }
 
   test("Lending books") {
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
-    library.lend(shadowBook)
+    val testBooks = List[Book](shadowBook)
 
+    val library = new Library(testBooks)
+    library.lend(shadowBook)
+    
     library.loanedBooks should contain (shadowBook)
   }
 
-  test("Checking loaned status of a book (true)") {
-    val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
-    library.isOnLoan(shadowBook) shouldBe true
-  }
-
-  test("Checking loaned status of a book (false)") {
-    val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
-    library.isOnLoan(timeBook) shouldBe false
-  }
-
-  test("#lend throws an exception when lending a reference book") {
+  test("Cannot lend a reference book") {
     val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
-    an [Exception] should be thrownBy library.lend(rubyBook)
+    val testBooks = List[Book]()
+    val referenceBooks = List[Book](rubyBook)
+
+    val library = new Library(testBooks, referenceBooks)
+
+    the [Exception] thrownBy {
+      library.lend(rubyBook)
+    } should have message "Cannot lend reference books"
+  }
+
+  test("Checking loaned status of a book") {
+    val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+    val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+    val testBooks = List[Book](timeBook, shadowBook)
+
+    val library = new Library(testBooks)
+    library.lend(shadowBook)
+
+    library.isOnLoan(shadowBook) shouldBe true
+    library.isOnLoan(timeBook) shouldBe false
   }
 }
