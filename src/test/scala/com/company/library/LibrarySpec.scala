@@ -53,11 +53,11 @@ class LibrarySpec extends FunSuite {
   }
 
   test("Lending a reference book throws an exception") {
-    val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt", true)
-    val library = new Library(List[Book](rubyBook))
+    val scalaBook = Book("Scala Cookbook: Recipes for Object-Oriented and Functional Programming", "Alvin Alexander", "qyhawcfrxt", true)
+    val library = new Library(List[Book](scalaBook))
 
     the [Exception] thrownBy {
-      library.lend(rubyBook)
+      library.lend(scalaBook)
     } should have message "Cannot lend reference books"
   }
 
@@ -95,11 +95,11 @@ class LibrarySpec extends FunSuite {
   }
 
   test("Returning a book that was not on loan throws an exception") {
-    val birdBook = Book("Birdsong", "Faulks, Sebastian", "jioanxkn")
+    val myBook = Book("My Book", "Me", "xxxxxxxx")
     val library = new Library()
 
     the [Exception] thrownBy {
-      library.returnBook(birdBook)
+      library.returnBook(myBook)
     } should have message "Book was not on loan"
   }
 }
