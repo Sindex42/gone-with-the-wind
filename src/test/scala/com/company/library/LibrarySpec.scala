@@ -46,20 +46,15 @@ class LibrarySpec extends FunSuite {
 
   test("Lending books") {
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
-    val testBooks = List[Book](shadowBook)
+    val library = new Library(List[Book](shadowBook))
 
-    val library = new Library(testBooks)
     library.lend(shadowBook)
-
     library.loanedBooks should contain (shadowBook)
   }
 
   test("Cannot lend a reference book") {
-    val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
-    val testBooks = List[Book]()
-    val referenceBooks = List[Book](rubyBook)
-
-    val library = new Library(testBooks, referenceBooks)
+    val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt", true)
+    val library = new Library(List[Book](rubyBook))
 
     the [Exception] thrownBy {
       library.lend(rubyBook)

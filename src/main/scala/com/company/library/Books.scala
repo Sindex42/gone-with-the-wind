@@ -102,12 +102,8 @@ object Books {
     Book("Hunger Games,The:Hunger Games Trilogy", "Collins, Suzanne", "dbfflaxab"),
     Book("Lost Boy,The:A Foster Child's Search for the Love of a Family", "Pelzer, Dave", "dsrzkqjsp"),
     Book("Jamie's Ministry of Food:Anyone Can Learn to Cook in 24 Hours", "Oliver, Jamie", "foacwdyi"),
-    Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
-  )
-
-  val reference: List[Book] = List(
-    Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
+    Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt", true)
   )
 }
 
-case class Book(title: String, author: String, ISBN: String)
+case class Book(title: String, author: String, ISBN: String, reference: Boolean = false)
