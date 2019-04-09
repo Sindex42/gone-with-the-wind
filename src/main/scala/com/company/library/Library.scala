@@ -27,7 +27,11 @@ class Library(
       loanedBooks += book
   }
 
-  def isOnLoan(book: Book): Boolean = {
-    loanedBooks.contains(book)
+  def returnBook(book: Book) {
+    loanedBooks -= book
+  }
+
+  def isAvailable(book: Book): Boolean = {
+    !loanedBooks.contains(book)
   }
 }

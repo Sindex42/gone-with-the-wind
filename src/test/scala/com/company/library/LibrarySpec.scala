@@ -3,8 +3,6 @@ package com.company.library
 import org.scalatest.FunSuite
 import org.scalatest.Matchers._
 
-import com.company.library
-
 class LibrarySpec extends FunSuite {
   test("Search by ISBN match") {
     val testBooks = List[Book](
@@ -52,7 +50,7 @@ class LibrarySpec extends FunSuite {
 
     val library = new Library(testBooks)
     library.lend(shadowBook)
-    
+
     library.loanedBooks should contain (shadowBook)
   }
 
@@ -76,7 +74,19 @@ class LibrarySpec extends FunSuite {
     val library = new Library(testBooks)
     library.lend(shadowBook)
 
-    library.isOnLoan(shadowBook) shouldBe true
-    library.isOnLoan(timeBook) shouldBe false
+    library.isAvailable(shadowBook) shouldBe false
+    library.isAvailable(timeBook) shouldBe true
+  }
+
+  test("Returning a book") {
+    val birdBook = Book("Birdsong", "Faulks, Sebastian", "jioanxkn")
+    val testBooks = List[Book](birdBook)
+
+    val library = new Library(testBooks)
+    library.lend(birdBook)
+    library.isAvailable(birdBook) shouldBe false
+
+    library.returnBook(birdBook)
+    library.isAvailable(birdBook) shouldBe true
   }
 }
