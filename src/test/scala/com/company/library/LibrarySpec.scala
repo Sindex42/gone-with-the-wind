@@ -52,7 +52,7 @@ class LibrarySpec extends FunSuite {
     library.loanedBooks should contain (shadowBook)
   }
 
-  test("Cannot lend a reference book") {
+  test("Lending a reference book throws an exception") {
     val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt", true)
     val library = new Library(List[Book](rubyBook))
 
@@ -61,7 +61,7 @@ class LibrarySpec extends FunSuite {
     } should have message "Cannot lend reference books"
   }
 
-  test("Cannot lend a book that does not exist") {
+  test("Lending a book that does not exist throws an exception") {
     val rubyBook = Book("Fake Book", "No Author", "xxxxxxxx")
     val library = new Library()
 
@@ -92,5 +92,14 @@ class LibrarySpec extends FunSuite {
 
     library.returnBook(birdBook)
     library.isAvailable(birdBook) shouldBe true
+  }
+
+  test("Returning a book that was not on loan throws an exception") {
+    val birdBook = Book("Birdsong", "Faulks, Sebastian", "jioanxkn")
+    val library = new Library()
+
+    the [Exception] thrownBy {
+      library.returnBook(birdBook)
+    } should have message "Book was not on loan"
   }
 }

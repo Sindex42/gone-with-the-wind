@@ -27,7 +27,10 @@ class Library(val books: List[Book] = Books.all) {
   }
 
   def returnBook(book: Book) {
-    loanedBooks -= book
+    if (!loanedBooks.contains(book))
+      throw new Exception("Book was not on loan")
+    else
+      loanedBooks -= book
   }
 
   def isAvailable(book: Book): Boolean = {
