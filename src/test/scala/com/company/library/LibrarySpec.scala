@@ -11,7 +11,7 @@ class LibrarySpec extends FunSuite {
     )
 
     val library = new Library(testBooks)
-    library.searchIsbn("pidtkl") shouldBe List(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
+    library.searchIsbn("pidtkl") shouldBe Option(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
   }
 
   test("Search by partial author") {
