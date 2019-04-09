@@ -9,15 +9,15 @@ class LibrarySpec extends FunSuite {
   val library = new Library
 
   test("Search by ISBN match") {
-    library.searchIsbn("pidtkl") shouldBe Book("Da Vinci Code,The", "Brown, Dan", "pidtkl")
+    library.searchIsbn("pidtkl") shouldBe List(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
   }
 
   test("Search by partial author (one book)") {
-    library.searchAuthor("Sebold") shouldBe Set(Book("Lovely Bones,The", "Sebold, Alice", "stniskzb"))
+    library.searchAuthor("Sebold") shouldBe List(Book("Lovely Bones,The", "Sebold, Alice", "stniskzb"))
   }
 
   test("Search by partial author (multiple books)") {
-    val result = Set(
+    val result = List(
       Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"),
       Book("Angels and Demons", "Brown, Dan", "mayiwrko"),
       Book("Lost Symbol,The", "Brown, Dan", "ewvxsoql"),
@@ -29,7 +29,7 @@ class LibrarySpec extends FunSuite {
   }
 
   test("Search by partial title") {
-    val result = Set(
+    val result = List(
       Book("Harry Potter and the Deathly Hallows", "Rowling, J.K.", "ipszbehyh"),
       Book("Harry Potter and the Philosopher's Stone", "Rowling, J.K.", "lfzowqpsj"),
       Book("Harry Potter and the Order of the Phoenix", "Rowling, J.K.", "ymjklwq"),

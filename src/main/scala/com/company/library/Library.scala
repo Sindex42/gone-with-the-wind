@@ -5,31 +5,16 @@ import scala.collection.mutable.ListBuffer
 class Library(val books: Books.type = Books) {
   var loanedBooks = ListBuffer[Book]()
 
-  def searchIsbn(isbn: String): Book = {
-    var result: Book = null
-    for (book <- books.all if book.ISBN == isbn) {
-      result = book
-    }
-
-    result
+  def searchIsbn(search: String): List[Book] = {
+    books.all.filter(book => book.ISBN == search)
   }
 
-  def searchAuthor(search: String): Set[Book] = {
-    var result = Set[Book]()
-    for (book <- books.all if book.author.contains(search)) {
-      result += book
-    }
-
-    result
+  def searchAuthor(search: String): List[Book] = {
+    books.all.filter(book => book.author.contains(search))
   }
 
-  def searchTitle(search: String): Set[Book] = {
-    var result = Set[Book]()
-    for (book <- books.all if book.title.contains(search)) {
-      result += book
-    }
-
-    result
+  def searchTitle(search: String): List[Book] = {
+    books.all.filter(book => book.title.contains(search))
   }
 
   def lend(book: Book) {
