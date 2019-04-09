@@ -59,4 +59,9 @@ class LibrarySpec extends FunSuite {
     val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
     library.isOnLoan(timeBook) shouldBe false
   }
+
+  test("#lend throws an exception when lending a reference book") {
+    val rubyBook = Book("Practical Object-Oriented Design in Ruby", "Sandi Metz", "qyhawcfrxt")
+    an [Exception] should be thrownBy library.lend(rubyBook)
+  }
 }

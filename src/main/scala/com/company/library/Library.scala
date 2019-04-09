@@ -7,27 +7,38 @@ class Library(val books: Books.type = Books) {
 
   def searchIsbn(isbn: String): Book = {
     var result: Book = null
-    for (book <- books.all if book.ISBN == isbn) { result = book }
+    for (book <- books.all if book.ISBN == isbn) {
+      result = book
+    }
 
     result
   }
 
   def searchAuthor(search: String): Set[Book] = {
     var result = Set[Book]()
-    for (book <- books.all if book.author.contains(search)) { result += book }
+    for (book <- books.all if book.author.contains(search)) {
+      result += book
+    }
 
     result
   }
 
   def searchTitle(search: String): Set[Book] = {
     var result = Set[Book]()
-    for (book <- books.all if book.title.contains(search)) { result += book }
+    for (book <- books.all if book.title.contains(search)) {
+      result += book
+    }
 
     result
   }
 
   def lend(book: Book) {
-    loanedBooks += book
+    if (books.reference.contains(book)) {
+      throw new Exception("Cannot lend reference books")
+    }
+    else {
+      loanedBooks += book
+    }
   }
 
   def isOnLoan(book: Book): Boolean = {
