@@ -5,8 +5,8 @@ import scala.collection.mutable.ListBuffer
 class Library(val books: List[Book] = Books.all) {
   var loans = ListBuffer[Loan]()
 
-  def searchIsbn(search: String): Option[Book] = {
-    books.find(book => book.ISBN == search)
+  def searchIsbn(search: String): Book = {
+    books.find(book => book.ISBN == search).head
   }
 
   def searchAuthor(search: String): List[Book] = {

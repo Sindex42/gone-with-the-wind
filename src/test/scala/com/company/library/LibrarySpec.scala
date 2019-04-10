@@ -11,7 +11,7 @@ class LibrarySpec extends FunSuite {
     )
 
     val library = new Library(testBooks)
-    library.searchIsbn("pidtkl") shouldBe Option(Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"))
+    library.searchIsbn("pidtkl") shouldBe Book("Da Vinci Code,The", "Brown, Dan", "pidtkl")
   }
 
   test("Search by partial author") {
@@ -44,7 +44,7 @@ class LibrarySpec extends FunSuite {
     library.searchTitle("Life") shouldBe result
   }
 
-  test("Lending books") {
+  test("Lending a book adds a loan") {
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
     val library = new Library(List[Book](shadowBook))
 
@@ -73,25 +73,22 @@ class LibrarySpec extends FunSuite {
   test("Checking loaned status of a book") {
     val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
-    val testBooks = List[Book](timeBook, shadowBook)
 
-    val library = new Library(testBooks)
+    val library = new Library(List[Book](timeBook, shadowBook))
     library.lend(shadowBook, "Elizabeth Rary")
 
     library.isOnLoan(timeBook) shouldBe false
     library.isOnLoan(shadowBook) shouldBe true
   }
 
-  test("Returning a book") {
+  test("Returning a book removes a loan") {
     val birdBook = Book("Birdsong", "Faulks, Sebastian", "jioanxkn")
-    val testBooks = List[Book](birdBook)
+    val library = new Library(List[Book](birdBook))
 
-    val library = new Library(testBooks)
     library.lend(birdBook, "Elizabeth Rary")
-    library.isOnLoan(birdBook) shouldBe true
-
     library.returnBook(birdBook)
-    library.isOnLoan(birdBook) shouldBe false
+
+    library.loans should not contain (Loan(birdBook, "Elizabeth Rary"))
   }
 
   test("Returning a book that was not on loan throws an exception") {
