@@ -38,7 +38,7 @@ class SearchLibrarySpec extends FunSuite {
   }
 }
 
-class LendBorrowLibrarySpec extends FunSuite with BeforeAndAfterEach {
+class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
   val testBooks = List[Book](
     Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi"),
     Book("Scala Cookbook: Recipes for Object-Oriented and Functional Programming", "Alvin Alexander", "qyhawcfrxt", true),
@@ -46,6 +46,7 @@ class LendBorrowLibrarySpec extends FunSuite with BeforeAndAfterEach {
   )
   val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
   val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+  val otherBook = Book("Other Book", "No Author", "xxxxxxxx")
 
   var library: Library = null
 
@@ -69,10 +70,8 @@ class LendBorrowLibrarySpec extends FunSuite with BeforeAndAfterEach {
   }
 
   test("Lending a book that is not in stock throws an exception") {
-    val rubyBook = Book("Fake Book", "No Author", "xxxxxxxx")
-
     the [Exception] thrownBy {
-      library.lend(rubyBook, "Elizabeth Rary")
+      library.lend(otherBook, "Elizabeth Rary")
     } should have message "Book is not in stock"
   }
 
@@ -90,6 +89,12 @@ class LendBorrowLibrarySpec extends FunSuite with BeforeAndAfterEach {
     library.isInStock(shadowBook) shouldBe false
   }
 
+  test("Checking lender of a book") {
+    library.lend(shadowBook, "Elizabeth Rary")
+
+    library.loans.head.name shouldBe "Elizabeth Rary"
+  }
+
   test("Returning a book removes a loan and adds it back to stock") {
     library.lend(shadowBook, "Elizabeth Rary")
     library.returnBook(shadowBook)
@@ -99,10 +104,8 @@ class LendBorrowLibrarySpec extends FunSuite with BeforeAndAfterEach {
   }
 
   test("Returning a book that was not on loan throws an exception") {
-    val myBook = Book("My Book", "Me", "xxxxxxxx")
-
     the [Exception] thrownBy {
-      library.returnBook(myBook)
+      library.returnBook(otherBook)
     } should have message "Book was not on loan"
   }
 }
