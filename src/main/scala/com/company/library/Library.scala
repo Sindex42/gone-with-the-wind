@@ -3,6 +3,7 @@ package com.company.library
 import scala.collection.mutable.ListBuffer
 
 class Library(val books: List[Book] = Books.all) {
+  var stock = books.to[ListBuffer]
   var loans = ListBuffer[Loan]()
 
   def searchIsbn(search: String): Book = {
@@ -18,18 +19,25 @@ class Library(val books: List[Book] = Books.all) {
   }
 
   def lend(book: Book, name: String) {
-    if (!books.contains(book)) throw new Exception("Book does not exist")
+    if (!isInStock(book)) throw new Exception("Book is not in stock")
     if (book.reference) throw new Exception("Cannot lend reference books")
 
+    stock -= book
     loans += new Loan(book, name)
   }
 
   def returnBook(book: Book) {
     if (!isOnLoan(book)) throw new Exception("Book was not on loan")
+
     loans -= loans.find(loan => loan.book == book).head
+    stock += book
   }
 
   def isOnLoan(book: Book): Boolean = {
     loans.exists(loan => loan.book == book)
+  }
+
+  def isInStock(book: Book): Boolean = {
+    stock.contains(book)
   }
 }

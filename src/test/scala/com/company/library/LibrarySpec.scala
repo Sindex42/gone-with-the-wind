@@ -44,12 +44,13 @@ class LibrarySpec extends FunSuite {
     library.searchTitle("Life") shouldBe result
   }
 
-  test("Lending a book adds a loan") {
+  test("Lending a book adds a loan and removes it from stock") {
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
     val library = new Library(List[Book](shadowBook))
 
     library.lend(shadowBook, "Elizabeth Rary")
     library.loans should contain (Loan(shadowBook, "Elizabeth Rary"))
+    library.stock should not contain (shadowBook)
   }
 
   test("Lending a reference book throws an exception") {
@@ -61,13 +62,13 @@ class LibrarySpec extends FunSuite {
     } should have message "Cannot lend reference books"
   }
 
-  test("Lending a book that does not exist throws an exception") {
+  test("Lending a book that is not in stock throws an exception") {
     val rubyBook = Book("Fake Book", "No Author", "xxxxxxxx")
     val library = new Library()
 
     the [Exception] thrownBy {
       library.lend(rubyBook, "Elizabeth Rary")
-    } should have message "Book does not exist"
+    } should have message "Book is not in stock"
   }
 
   test("Checking loaned status of a book") {
@@ -81,7 +82,18 @@ class LibrarySpec extends FunSuite {
     library.isOnLoan(shadowBook) shouldBe true
   }
 
-  test("Returning a book removes a loan") {
+  test("Checking stock status of a book") {
+    val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+    val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+
+    val library = new Library(List[Book](timeBook, shadowBook))
+    library.lend(shadowBook, "Elizabeth Rary")
+
+    library.isInStock(timeBook) shouldBe true
+    library.isInStock(shadowBook) shouldBe false
+  }
+
+  test("Returning a book removes a loan and adds it back to stock") {
     val birdBook = Book("Birdsong", "Faulks, Sebastian", "jioanxkn")
     val library = new Library(List[Book](birdBook))
 
@@ -89,6 +101,7 @@ class LibrarySpec extends FunSuite {
     library.returnBook(birdBook)
 
     library.loans should not contain (Loan(birdBook, "Elizabeth Rary"))
+    library.stock should contain (birdBook)
   }
 
   test("Returning a book that was not on loan throws an exception") {
