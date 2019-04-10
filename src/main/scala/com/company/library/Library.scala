@@ -18,22 +18,31 @@ class Library(val books: List[Book] = Books.all) {
   }
 
   def lend(book: Book) {
-    if (!books.contains(book))
-      throw new Exception("Book does not exist")
-    else if (book.reference)
-      throw new Exception("Cannot lend reference books")
-    else
-      loanedBooks += book
+    isBookInLibrary(book)
+    isReference(book)
+    loanedBooks += book
   }
 
   def returnBook(book: Book) {
-    if (!loanedBooks.contains(book))
-      throw new Exception("Book was not on loan")
-    else
-      loanedBooks -= book
+    isOnLoan(book)
+    loanedBooks -= book
   }
 
   def isAvailable(book: Book): Boolean = {
     !loanedBooks.contains(book)
   }
+
+
+  private def isBookInLibrary(book: Book) {
+    if (!books.contains(book)) throw new Exception("Book does not exist")
+  }
+
+  private def isReference(book: Book) {
+    if (book.reference) throw new Exception("Cannot lend reference books")
+  }
+
+  private def isOnLoan(book: Book) {
+    if (!loanedBooks.contains(book)) throw new Exception("Book was not on loan")
+  }
+
 }
