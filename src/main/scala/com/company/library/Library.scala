@@ -5,10 +5,10 @@ import java.time.LocalDate
 
 class Library(
   val books: List[Book] = Books.all,
-  var loans: ListBuffer[Loan] = ListBuffer(),
+  val loans: ListBuffer[Loan] = ListBuffer(),
 ) {
   val LoanLength = 21
-  var stock = books.to[ListBuffer]
+  val stock = books.to[ListBuffer]
 
   def searchIsbn(search: String): Book = {
     books.find(book => book.ISBN == search).head

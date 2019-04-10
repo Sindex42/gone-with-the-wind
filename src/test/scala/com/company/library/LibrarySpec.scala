@@ -119,4 +119,11 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
 
     library.findLateBooks shouldBe ListBuffer(lateLoan)
   }
+
+  test("Finding late books' owners") {
+    val lateLoan = Loan(shadowBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength + 1))
+    library = new Library(testBooks, ListBuffer(lateLoan))
+
+    library.findLateBooks.head.name shouldBe "Elizabeth Rary"
+  }
 }
