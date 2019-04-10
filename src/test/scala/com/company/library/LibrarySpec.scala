@@ -48,8 +48,8 @@ class LibrarySpec extends FunSuite {
     val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
     val library = new Library(List[Book](shadowBook))
 
-    library.lend(shadowBook)
-    library.loanedBooks should contain (shadowBook)
+    library.lend(shadowBook, "Elizabeth Rary")
+    library.loans should contain (Loan(shadowBook, "Elizabeth Rary"))
   }
 
   test("Lending a reference book throws an exception") {
@@ -57,7 +57,7 @@ class LibrarySpec extends FunSuite {
     val library = new Library(List[Book](scalaBook))
 
     the [Exception] thrownBy {
-      library.lend(scalaBook)
+      library.lend(scalaBook, "Elizabeth Rary")
     } should have message "Cannot lend reference books"
   }
 
@@ -66,7 +66,7 @@ class LibrarySpec extends FunSuite {
     val library = new Library()
 
     the [Exception] thrownBy {
-      library.lend(rubyBook)
+      library.lend(rubyBook, "Elizabeth Rary")
     } should have message "Book does not exist"
   }
 
@@ -76,10 +76,10 @@ class LibrarySpec extends FunSuite {
     val testBooks = List[Book](timeBook, shadowBook)
 
     val library = new Library(testBooks)
-    library.lend(shadowBook)
+    library.lend(shadowBook, "Elizabeth Rary")
 
-    library.isAvailable(shadowBook) shouldBe false
-    library.isAvailable(timeBook) shouldBe true
+    library.isOnLoan(timeBook) shouldBe false
+    library.isOnLoan(shadowBook) shouldBe true
   }
 
   test("Returning a book") {
@@ -87,11 +87,11 @@ class LibrarySpec extends FunSuite {
     val testBooks = List[Book](birdBook)
 
     val library = new Library(testBooks)
-    library.lend(birdBook)
-    library.isAvailable(birdBook) shouldBe false
+    library.lend(birdBook, "Elizabeth Rary")
+    library.isOnLoan(birdBook) shouldBe true
 
     library.returnBook(birdBook)
-    library.isAvailable(birdBook) shouldBe true
+    library.isOnLoan(birdBook) shouldBe false
   }
 
   test("Returning a book that was not on loan throws an exception") {

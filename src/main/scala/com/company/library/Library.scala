@@ -3,7 +3,7 @@ package com.company.library
 import scala.collection.mutable.ListBuffer
 
 class Library(val books: List[Book] = Books.all) {
-  var loanedBooks = ListBuffer[Book]()
+  var loans = ListBuffer[Loan]()
 
   def searchIsbn(search: String): Option[Book] = {
     books.find(book => book.ISBN == search)
@@ -17,32 +17,19 @@ class Library(val books: List[Book] = Books.all) {
     books.filter(book => book.title.contains(search))
   }
 
-  def lend(book: Book) {
-    isBookInLibrary(book)
-    isReference(book)
-    loanedBooks += book
+  def lend(book: Book, name: String) {
+    if (!books.contains(book)) throw new Exception("Book does not exist")
+    if (book.reference) throw new Exception("Cannot lend reference books")
+
+    loans += new Loan(book, name)
   }
 
   def returnBook(book: Book) {
-    isOnLoan(book)
-    loanedBooks -= book
+    if (!isOnLoan(book)) throw new Exception("Book was not on loan")
+    loans -= loans.find(loan => loan.book == book).head
   }
 
-  def isAvailable(book: Book): Boolean = {
-    !loanedBooks.contains(book)
+  def isOnLoan(book: Book): Boolean = {
+    loans.exists(loan => loan.book == book)
   }
-
-
-  private def isBookInLibrary(book: Book) {
-    if (!books.contains(book)) throw new Exception("Book does not exist")
-  }
-
-  private def isReference(book: Book) {
-    if (book.reference) throw new Exception("Cannot lend reference books")
-  }
-
-  private def isOnLoan(book: Book) {
-    if (!loanedBooks.contains(book)) throw new Exception("Book was not on loan")
-  }
-
 }
