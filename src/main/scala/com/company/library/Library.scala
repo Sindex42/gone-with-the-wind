@@ -1,10 +1,14 @@
 package com.company.library
 
 import scala.collection.mutable.ListBuffer
+import java.time.LocalDate
 
-class Library(val books: List[Book] = Books.all) {
+class Library(
+  val books: List[Book] = Books.all,
+  var loans: ListBuffer[Loan] = ListBuffer(),
+) {
+  val LoanLength = 21
   var stock = books.to[ListBuffer]
-  var loans = ListBuffer[Loan]()
 
   def searchIsbn(search: String): Book = {
     books.find(book => book.ISBN == search).head
@@ -39,5 +43,9 @@ class Library(val books: List[Book] = Books.all) {
 
   def isInStock(book: Book): Boolean = {
     stock.contains(book)
+  }
+
+  def findLateBooks: ListBuffer[Loan] = {
+    loans.filter(loan => loan.date.plusDays(LoanLength) isBefore LocalDate.now)
   }
 }

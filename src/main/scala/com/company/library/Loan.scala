@@ -1,3 +1,5 @@
 package com.company.library
 
-case class Loan(book: Book, name: String)
+import java.time.LocalDate
+
+case class Loan(book: Book, name: String, date: LocalDate = LocalDate.now)

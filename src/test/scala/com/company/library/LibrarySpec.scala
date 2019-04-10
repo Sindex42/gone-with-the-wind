@@ -4,6 +4,9 @@ import org.scalatest.FunSuite
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.Matchers._
 
+import scala.collection.mutable.ListBuffer
+import java.time.LocalDate
+
 class SearchLibrarySpec extends FunSuite {
   val testBooks = List[Book](
     Book("Da Vinci Code,The", "Brown, Dan", "pidtkl"),
@@ -107,5 +110,13 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
     the [Exception] thrownBy {
       library.returnBook(otherBook)
     } should have message "Book was not on loan"
+  }
+
+  test("Finding late books") {
+    val lateLoan = Loan(shadowBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength + 1))
+    val notlateLoan = Loan(timeBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength))
+    library = new Library(testBooks, ListBuffer(lateLoan, notlateLoan))
+
+    library.findLateBooks shouldBe ListBuffer(lateLoan)
   }
 }
