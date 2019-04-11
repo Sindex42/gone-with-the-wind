@@ -92,9 +92,9 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
   }
 
   test("Checking lender of a book") {
-    library.lend(shadowBook, "Elizabeth Rary")
+    library.lend(shadowBook, "Leonard DeBooke")
 
-    library.loans.head.name shouldBe "Elizabeth Rary"
+    library.loans.head.name shouldBe "Leonard DeBooke"
   }
 
   test("Returning a book removes a loan and adds it back to stock") {
@@ -110,22 +110,36 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
       library.returnBook(otherBook)
     } should have message "Book was not on loan"
   }
+}
+
+class LateLibrarySpec extends FunSuite with BeforeAndAfterEach {
+  val testBooks = List[Book](
+    Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi"),
+    Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+  )
+  val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+  val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
+
+  var library = new Library
+
+  val notLateDate = LocalDate.now.minusDays(library.LoanLength)
+  val lateDate = LocalDate.now.minusDays(library.LoanLength + 1)
+  val notLateLoan = Loan(timeBook, "Justin Thyme", notLateDate)
+  val lateLoan = Loan(shadowBook, "Owen Monie", lateDate)
+
+  override def beforeEach(): Unit = {
+    library = new Library(testBooks, ListBuffer(lateLoan, notLateLoan))
+  }
 
   test("Finding late books") {
-    val notLateDate = LocalDate.now.minusDays(library.LoanLength)
-    val lateDate = LocalDate.now.minusDays(library.LoanLength + 1)
-    val notLateLoan = Loan(timeBook, "Elizabeth Rary", notLateDate)
-    val lateLoan = Loan(shadowBook, "Elizabeth Rary", lateDate)
-    library = new Library(testBooks, ListBuffer(lateLoan, notLateLoan))
-
     library.findLateBooks shouldBe ListBuffer(lateLoan)
   }
 
   test("Finding late books' owners") {
-    val lateDate = LocalDate.now.minusDays(library.LoanLength + 1)
-    val lateLoan = Loan(shadowBook, "Elizabeth Rary", lateDate)
-    library = new Library(testBooks, ListBuffer(lateLoan))
+    library.findLateBooks.head.name shouldBe "Owen Monie"
+  }
 
-    library.findLateBooks.head.name shouldBe "Elizabeth Rary"
+  test("Fining a customer for a late return") {
+    library.returnBook(shadowBook) shouldBe "Book is late, please pay the fine"
   }
 }

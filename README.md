@@ -10,7 +10,7 @@ A library program to manage searches, lending and returning of books. All requir
 
 ## Approach
 
-* I Started with the full ISBN search as that only required complete string matching and would only be return a single book.
+* I started with the full ISBN search as that only required complete string matching and would only be return a single book.
 * For the partial author and title search, I initially grouped the search results into a set, as they cannot have duplicate elements and are unordered. I later reverted to returning the search results as a list for simplicity's sake.
 * My approach to managing reference books was to add another field to each book that defaults to false. This meant that I didn't have to make any large changes to the way Library imports books.
 * I refactored the tests to make them more readable by using a beforeEach block. This reduced the repetition caused by creating and seeding a new library with books.

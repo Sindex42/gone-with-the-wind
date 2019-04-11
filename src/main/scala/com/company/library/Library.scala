@@ -31,11 +31,14 @@ class Library(
     loans += new Loan(book, name)
   }
 
-  def returnBook(book: Book): Unit = {
+  def returnBook(book: Book): Any = {
     if (!isOnLoan(book)) throw new Exception("Book was not on loan")
 
-    loans -= loans.find(loan => loan.book == book).head
+    val loan = loans.find(loan => loan.book == book).head
+    loans -= loan
     stock += book
+
+    if (isLoanLate(loan)) "Book is late, please pay the fine"
   }
 
   def isOnLoan(book: Book): Boolean = {
@@ -47,6 +50,10 @@ class Library(
   }
 
   def findLateBooks: ListBuffer[Loan] = {
-    loans.filter(loan => loan.date.plusDays(LoanLength) isBefore LocalDate.now)
+    loans.filter(loan => isLoanLate(loan))
+  }
+
+  private def isLoanLate(loan: Loan): Boolean = {
+    loan.date.plusDays(LoanLength) isBefore LocalDate.now
   }
 }
