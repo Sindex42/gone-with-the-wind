@@ -1,20 +1,17 @@
 # Gone With The Wind
 
-## Instructions
-
-You have a library of books and are offering them to the world - you are lending so many books now that it is becoming hard to keep track of what you have.  You decided to use your programming fu to build an application which can keep track of them for you.
 
 ### Getting started
 
 * clone the project
 * import via IntelliJ IDEA
 
-### Requirements
+### Approach
 
-* implements the user stories listed below (optional ones not required)
-* compiles
-* has tests
-* frequent commits
+
+
+### Testing
+![Imgur](http://i.imgur.com/ZpW7Ygi.png)
 
 ### Usage
 
@@ -41,32 +38,53 @@ You have a library of books and are offering them to the world - you are lending
 ![Imgur](http://i.imgur.com/SVetv1U.png)
 
 ##### Lending and returning a book
-Loans must include a name
-Library.loan creates an object with the book, name, and date of loan
-That book is now not in stock and on loan
-Returning a book reverses this and removes the loan
+* Loans must include a name
+
+* Library.loan creates an object with the book, name, and date of loan
+
+* That book is now not in stock and also on loan
+
+* Returning a book reverses this and removes the loan
+
 ![Imgur](http://i.imgur.com/Tn8ZLcd.png)
 
 ##### Determining which books are late
 
-Creating a date exceeding book loan LoanLength
+* Creating a date exceeding library LoanLength
+
 ![Imgur](http://i.imgur.com/oTxK1hX.png)
 
-Creating a late loan and a new library with one book and that loan
+* Creating a late loan and a new library with one book and that loan
+
 ![Imgur](http://i.imgur.com/fYPjgtO.png)
 
-Lending a book today
-Finding all loans
-Finding late loans
+* Lending a book today
+
+* Finding all loans
+
+* Finding late loans
+
 ![Imgur](http://i.imgur.com/n8rRtTO.png)
 
+---
 
-### Testing
-![Imgur](http://i.imgur.com/ZpW7Ygi.png)
+## Original Instructions
 
+You have a library of books and are offering them to the world - you are lending so many books now that it is becoming hard to keep track of what you have.  You decided to use your programming fu to build an application which can keep track of them for you.
 
+##### Getting started
 
-### Original User Stories
+* clone the project
+* import via IntelliJ IDEA
+
+##### Requirements
+
+* implements the user stories listed below (optional ones not required)
+* compiles
+* has tests
+* frequent commits
+
+##### User Stories
 
 ```text
 As a visitor,
