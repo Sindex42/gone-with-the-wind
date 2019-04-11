@@ -1,7 +1,7 @@
 # Gone With The Wind
 <a href="https://codeclimate.com/github/Sindex42/gone-with-the-wind/maintainability"><img src="https://api.codeclimate.com/v1/badges/f72306b513234e01ecdf/maintainability" /></a>
 
-A library program to manage searches, lending and returning of books. All required and optional user stories completed apart from the last one regarding fines for users who are late returning their books.   
+A library program to manage searches, lending and returning of books. All required and optional user stories completed.   
 
 ## Getting started
 
@@ -79,6 +79,8 @@ I later created a separate Loan case class to keep track of who borrowed a book 
 
 ![Imgur](http://i.imgur.com/n8rRtTO.png)
 
+##### Returning a late book
+![Imgur](http://i.imgur.com/DCpCBi1.png)
 ---
 
 ## Original Instructions
