@@ -7,6 +7,7 @@ class Library(
   val books: List[Book] = Books.all,
   val loans: ListBuffer[Loan] = ListBuffer(),
 ) {
+
   val LoanLength = 21
   val stock = books.to[ListBuffer]
 

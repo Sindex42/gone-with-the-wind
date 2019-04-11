@@ -48,6 +48,7 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
     Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
   )
   val shadowBook = Book("Shadow of the Wind,The", "Zafon, Carlos Ruiz", "uktaqi")
+  val scalaBook = Book("Scala Cookbook: Recipes for Object-Oriented and Functional Programming", "Alvin Alexander", "qyhawcfrxt", true)
   val timeBook = Book("Time Traveler's Wife,The", "Niffenegger, Audrey", "zmxmdotjj")
   val otherBook = Book("Other Book", "No Author", "xxxxxxxx")
 
@@ -65,8 +66,6 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
   }
 
   test("Lending a reference book throws an exception") {
-    val scalaBook = Book("Scala Cookbook: Recipes for Object-Oriented and Functional Programming", "Alvin Alexander", "qyhawcfrxt", true)
-
     the [Exception] thrownBy {
       library.lend(scalaBook, "Elizabeth Rary")
     } should have message "Cannot lend reference books"
@@ -113,15 +112,18 @@ class LendLibrarySpec extends FunSuite with BeforeAndAfterEach {
   }
 
   test("Finding late books") {
-    val lateLoan = Loan(shadowBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength + 1))
-    val notlateLoan = Loan(timeBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength))
-    library = new Library(testBooks, ListBuffer(lateLoan, notlateLoan))
+    val notLateDate = LocalDate.now.minusDays(library.LoanLength)
+    val lateDate = LocalDate.now.minusDays(library.LoanLength + 1)
+    val notLateLoan = Loan(timeBook, "Elizabeth Rary", notLateDate)
+    val lateLoan = Loan(shadowBook, "Elizabeth Rary", lateDate)
+    library = new Library(testBooks, ListBuffer(lateLoan, notLateLoan))
 
     library.findLateBooks shouldBe ListBuffer(lateLoan)
   }
 
   test("Finding late books' owners") {
-    val lateLoan = Loan(shadowBook, "Elizabeth Rary", LocalDate.now.minusDays(library.LoanLength + 1))
+    val lateDate = LocalDate.now.minusDays(library.LoanLength + 1)
+    val lateLoan = Loan(shadowBook, "Elizabeth Rary", lateDate)
     library = new Library(testBooks, ListBuffer(lateLoan))
 
     library.findLateBooks.head.name shouldBe "Elizabeth Rary"
