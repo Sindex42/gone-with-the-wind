@@ -23,7 +23,7 @@ class Library(
     books.filter(book => book.title.contains(search))
   }
 
-  def lend(book: Book, name: String) {
+  def lend(book: Book, name: String): Unit = {
     if (!isInStock(book)) throw new Exception("Book is not in stock")
     if (book.reference) throw new Exception("Cannot lend reference books")
 
@@ -31,7 +31,7 @@ class Library(
     loans += new Loan(book, name)
   }
 
-  def returnBook(book: Book) {
+  def returnBook(book: Book): Unit = {
     if (!isOnLoan(book)) throw new Exception("Book was not on loan")
 
     loans -= loans.find(loan => loan.book == book).head

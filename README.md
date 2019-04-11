@@ -1,19 +1,32 @@
 # Gone With The Wind
+<a href="https://codeclimate.com/github/Sindex42/gone-with-the-wind/maintainability"><img src="https://api.codeclimate.com/v1/badges/f72306b513234e01ecdf/maintainability" /></a>
 
+A library program to manage searches, lending and returning of books. All required and optional user stories completed apart from the last one regarding fines for users who are late returning their books.   
 
-### Getting started
+## Getting started
 
 * clone the project
 * import via IntelliJ IDEA
 
-### Approach
+## Approach
 
+* I Started with the full ISBN search as that only required complete string matching and would only be return a single book.
+* For the partial author and title search, I initially grouped the search results into a set, as they cannot have duplicate elements and are unordered. I later reverted to returning the search results as a list for simplicity's sake.
+* My approach to managing reference books was to add another field to each book that defaults to false. This meant that I didn't have to make any large changes to the way Library imports books.
+* I refactored the tests to make them more readable by using a beforeEach block. This reduced the repetition caused by creating and seeding a new library with books.
+* My initial approach to lending books was to add a copy of the book to a new listBuffer. I chose listBuffers as the collection would be changed frequently and thus would benefit from being mutable.
+I later created a separate Loan case class to keep track of who borrowed a book and when they borrowed it.
 
+#### Assumptions
 
-### Testing
+* ISBNs are unique
+* Searches are case sensitive
+* Libraries only have one copy of each book
+
+## Testing
 ![Imgur](http://i.imgur.com/ZpW7Ygi.png)
 
-### Usage
+## Usage
 
 1. Start sbt `sbt`
 2. Start the scala console `console`
@@ -50,7 +63,7 @@
 
 ##### Determining which books are late
 
-* Creating a date exceeding library LoanLength
+* Creating a date exceeding library LoanLength (LoanLength stored in a constant in the Library class)
 
 ![Imgur](http://i.imgur.com/oTxK1hX.png)
 
