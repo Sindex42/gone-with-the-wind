@@ -1,8 +1,6 @@
 # Gone With The Wind
 <a href="https://codeclimate.com/github/Sindex42/gone-with-the-wind/maintainability"><img src="https://api.codeclimate.com/v1/badges/f72306b513234e01ecdf/maintainability" /></a>
 
-A library program to manage searches, lending and returning of books. All required and optional user stories completed.   
-
 ## Getting started
 
 * clone the project
